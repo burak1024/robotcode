@@ -65,38 +65,23 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command aimAtTarget(){
         return run(()->{
-        if (LimelightHelpers.getTV("limelight")){
-        double tx=LimelightHelpers.getTX("limelight");
-
-        double rotationSpeed = tx * 0.05;
-
-        this.setControl(new SwerveRequest.FieldCentric().withRotationalRate(rotationSpeed));
-        double ty = LimelightHelpers.getTY("limelight");
-        double driveSpeed = ty * 0.5;
-        
-        var currentPose = this.getState().Pose;
-
-       double targetY = 0.0;
-       
-       double errorY=targetY -currentPose.getY();
-       
-       double driveSpeedY= errorY*1.5;
-
-        this.setControl(new SwerveRequest.FieldCentric().withVelocityX(driveSpeed).withVelocityY(driveSpeedY));
-
+            double rotationSpeed = 0;
+            double driveSpeedY = 0;
             
-        
+            if (LimelightHelpers.getTV("limelight")){
+            double tx=LimelightHelpers.getTX("limelight");
+            rotationSpeed = tx* 0.05;
+            }
+            var currentPose = this.getState().Pose;
+            double targetY = 0.0;
+            double errorY =  targetY-currentPose.getY();
+            driveSpeedY= errorY * 1.5;
+
+            this.setControl(new SwerveRequest.FieldCentric().withVelocityY(driveSpeedY).withRotationalRate(rotationSpeed)
+            );});}
     
-    }
-        else{
-            this.setControl(new SwerveRequest.FieldCentric().withRotationalRate(0));
 
 
-        }   
-        }
-        );  
-    }
-    
     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         SwerveModuleConstants<?, ?, ?>... modules
