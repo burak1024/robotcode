@@ -74,7 +74,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         double ty = LimelightHelpers.getTY("limelight");
         double driveSpeed = ty * 0.5;
         
-        this.setControl(new SwerveRequest.FieldCentric().withVelocityX(driveSpeed));
+        var currentPose = this.getState().Pose;
+
+       double targetY = 0.0;
+       
+       double errorY=targetY -currentPose.getY();
+       
+       double driveSpeedY= errorY*1.5;
+
+        this.setControl(new SwerveRequest.FieldCentric().withVelocityX(driveSpeed).withVelocityY(driveSpeedY));
+
             
         
     
