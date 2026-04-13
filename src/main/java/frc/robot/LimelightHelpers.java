@@ -463,9 +463,6 @@ public class LimelightHelpers {
 
     }
 
-    /**
-     * Represents a Limelight Raw Fiducial result from Limelight's NetworkTables output.
-     */
     public static class RawFiducial {
         public int id = 0;
         public double txnc = 0;
@@ -487,9 +484,6 @@ public class LimelightHelpers {
         }
     }
 
-    /**
-     * Represents a Limelight Raw Neural Detector result from Limelight's NetworkTables output.
-     */
     public static class RawDetection {
         public int classId = 0;
         public double txnc = 0;
@@ -524,10 +518,7 @@ public class LimelightHelpers {
             this.corner3_Y = corner3_Y;
         }
     }
-    
-    /**
-     * Represents a 3D Pose Estimate.
-     */
+  
     public static class PoseEstimate {
         public Pose2d pose;
         public double timestampSeconds;
@@ -540,9 +531,6 @@ public class LimelightHelpers {
         public RawFiducial[] rawFiducials; 
         public boolean isMegaTag2;
 
-        /**
-         * Instantiates a PoseEstimate object with default values
-         */
         public PoseEstimate() {
             this.pose = new Pose2d();
             this.timestampSeconds = 0;
@@ -574,9 +562,7 @@ public class LimelightHelpers {
 
     private static ObjectMapper mapper;
 
-    /**
-     * Print JSON Parse time to the console in milliseconds
-     */
+   
     static boolean profileJSON = false;
 
     static final String sanitizeName(String name) {
@@ -586,16 +572,9 @@ public class LimelightHelpers {
         return name;
     }
 
-    /**
-     * Takes a 6-length array of pose data and converts it to a Pose3d object.
-     * Array format: [x, y, z, roll, pitch, yaw] where angles are in degrees.
-     * @param inData Array containing pose data [x, y, z, roll, pitch, yaw]
-     * @return Pose3d object representing the pose, or empty Pose3d if invalid data
-     */
     public static Pose3d toPose3D(double[] inData){
         if(inData.length < 6)
         {
-            //System.err.println("Bad LL 3D Pose Data!");
             return new Pose3d();
         }
         return new Pose3d(
@@ -604,17 +583,10 @@ public class LimelightHelpers {
                     Units.degreesToRadians(inData[5])));
     }
 
-    /**
-     * Takes a 6-length array of pose data and converts it to a Pose2d object.
-     * Uses only x, y, and yaw components, ignoring z, roll, and pitch.
-     * Array format: [x, y, z, roll, pitch, yaw] where angles are in degrees.
-     * @param inData Array containing pose data [x, y, z, roll, pitch, yaw]
-     * @return Pose2d object representing the pose, or empty Pose2d if invalid data
-     */
+    
     public static Pose2d toPose2D(double[] inData){
         if(inData.length < 6)
         {
-            //System.err.println("Bad LL 2D Pose Data!");
             return new Pose2d();
         }
         Translation2d tran2d = new Translation2d(inData[0], inData[1]);
@@ -622,13 +594,7 @@ public class LimelightHelpers {
         return new Pose2d(tran2d, r2d);
     }
 
-    /**
-     * Converts a Pose3d object to an array of doubles in the format [x, y, z, roll, pitch, yaw].
-     * Translation components are in meters, rotation components are in degrees.
-     * 
-     * @param pose The Pose3d object to convert
-     * @return A 6-element array containing [x, y, z, roll, pitch, yaw]
-     */
+
     public static double[] pose3dToArray(Pose3d pose) {
         double[] result = new double[6];
         result[0] = pose.getTranslation().getX();
@@ -640,14 +606,7 @@ public class LimelightHelpers {
         return result;
     }
 
-    /**
-     * Converts a Pose2d object to an array of doubles in the format [x, y, z, roll, pitch, yaw].
-     * Translation components are in meters, rotation components are in degrees.
-     * Note: z, roll, and pitch will be 0 since Pose2d only contains x, y, and yaw.
-     * 
-     * @param pose The Pose2d object to convert
-     * @return A 6-element array containing [x, y, 0, 0, 0, yaw]
-     */
+   
     public static double[] pose2dToArray(Pose2d pose) {
         double[] result = new double[6];
         result[0] = pose.getTranslation().getX();
@@ -675,8 +634,8 @@ public class LimelightHelpers {
         long timestamp = tsValue.timestamp;
         
         if (poseArray.length == 0) {
-            // Handle the case where no data is available
-            return null; // or some default PoseEstimate
+        
+            return null;
         }
     
         var pose = toPose2D(poseArray);
