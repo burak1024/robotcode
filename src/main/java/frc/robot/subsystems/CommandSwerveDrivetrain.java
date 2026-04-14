@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.LimelightHelpers;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
+
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.004; 
     private Notifier m_simNotifier = null;
@@ -59,26 +60,21 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         )
     );
 
-
-   
     private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
     public Command aimAtTarget(){
         return run(()->{
             double rotationSpeed = 0;
-            double driveSpeedY = 0;
             
             if (LimelightHelpers.getTV("limelight")){
             double tx=LimelightHelpers.getTX("limelight");
             rotationSpeed = tx* 0.05;
             }
-            var currentPose = this.getState().Pose;
-            double targetY = 0.0;
-            double errorY =  targetY-currentPose.getY();
-            driveSpeedY= errorY * 1.5;
+            
+            
+            this.setControl(new SwerveRequest.FieldCentric().withRotationalRate(rotationSpeed));
+        });}
 
-            this.setControl(new SwerveRequest.FieldCentric().withVelocityY(driveSpeedY).withRotationalRate(rotationSpeed)
-            );});}
     
 
 
@@ -140,6 +136,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             );
         } catch (Exception ex) {
             DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder", ex.getStackTrace());
+            ex.printStackTrace();
         }
     }
 

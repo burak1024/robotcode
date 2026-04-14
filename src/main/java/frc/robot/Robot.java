@@ -28,17 +28,6 @@ private final HootAutoReplay m_timeAndJoystickReplay=new HootAutoReplay()
 private final boolean kUseLimelight=false;
 
 
-
-
-/**
- * The methods in this class are called automatically corresponding to each mode, as described in
- * the TimedRobot documentation. If you change the name of this class or the package after creating
- * this project, you must also update the Main.java file in the project.
- 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
   public Robot() {
     m_robotContainer=new RobotContainer();
     
@@ -80,9 +69,7 @@ private final boolean kUseLimelight=false;
 if(m_autonomousCommand != null){
   CommandScheduler.getInstance().cancel(m_autonomousCommand);
 }
-
-
-  }
+}
 
   @Override
   public void teleopPeriodic() {}
