@@ -138,11 +138,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     @Override
     public void periodic() {
 
-        //blue tarafa göre limelight'ı ayarlayan kod
+        //The code that adjusts limelight for the blue
         var limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
 
 
-        //limelight'ta sinyal yoksa otomatik limelight'ı kapatıp robotun sahada kalmasını engelleyen kod
+        //if limelight doesn't works properly this code turning off the limelight
         if (limelightMeasurement != null && limelightMeasurement.tagCount > 0){
             addVisionMeasurement(
             limelightMeasurement.pose,

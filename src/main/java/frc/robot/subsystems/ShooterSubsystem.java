@@ -17,16 +17,16 @@ private final VelocityVoltage m_velocityControl = new VelocityVoltage(0);
 
 
     public ShooterSubsystem(){
-        //yeni konfigürasyon ayarlaması (boş sayfa gibi)
+        //new configuration (like a new folder)
         TalonFXConfiguration config = new TalonFXConfiguration();
 
-        //PID ve watt ayarlaması
+        //PID and watt adjusting
         config.Slot0.kP = 0.11;
         config.Slot0.kI = 0.5;
         config.Slot0.kD = 0.001;
         config.Slot0.kV = 0.12;
 
-        //saat yönünde dönmesini sağlayan kod
+        //The code that enables the turret to rotate clockwise
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
         //boş konfigürasyonu saat yönünde dönsün diye atayan kodlar(ayrıca 16. motorun 15.motorla aynı çalışmasını sağlayan kod)

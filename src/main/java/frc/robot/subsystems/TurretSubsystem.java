@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class TurretSubsystem extends SubsystemBase{
     public final TalonFX turretMotor =new TalonFX(17);
-    //Turret'in saat yönünde dönmesini sağlayan kod
+    
     public TurretSubsystem(){
 
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -16,7 +16,7 @@ public class TurretSubsystem extends SubsystemBase{
         turretMotor.getConfigurator().apply(config);
     }
 
-    //Taret'i durduran kod
+    //The code that stops the turret
     public void stop(){
         turretMotor.stopMotor();
     }

@@ -26,14 +26,19 @@ public class autoLockCommand extends Command {
   @Override
   public void initialize() {}
 
-  //hub'un koordinatlarıyla robotun koordinatlarını alıp,çıkarıp,pisagorunu alıyo ve motor hızını ona göre ayarlıyor
+  //this code takes the cooordinates of robot and hub and uses this for adjusting speed of the shooter motor
   @Override
   public void execute() {
     var currentPose= this.drivetrain.getState().Pose;
+
     double rx=currentPose.getX();
+
     double ry=currentPose.getY();
+
     double hx=4.575;double hy=4;double gx=rx-hx;double gy=ry-hy;
+
     double pisagor=Math.hypot(gx, gy);
+
     double autoRPS= 65+(pisagor*-1.5);
 
     shooter.setTopMotor(new VelocityVoltage(autoRPS));

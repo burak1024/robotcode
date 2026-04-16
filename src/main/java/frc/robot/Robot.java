@@ -30,7 +30,7 @@ public class Robot extends TimedRobot{
     m_timeAndJoystickReplay.update();
     CommandScheduler.getInstance().run();
     
-    //burayı ai dan almıştım sorgulamamışım hiç
+   
     if (kUseLimelight){
       var driveState =m_robotContainer.drivetrain.getState();
       double headingDeg = driveState.Pose.getRotation().getDegrees();

@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IndexerSubsystem extends SubsystemBase{
     public final TalonFX IndexerMotor=new TalonFX(18);
-        //indexer'ın motorunun saat yönüne göre dönmesini sağlayan kod
+        //The code that enables the turret to rotate clockwise
         public IndexerSubsystem(){
             TalonFXConfiguration config = new TalonFXConfiguration();
             config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; 
             IndexerMotor.getConfigurator().apply(config);
         }
-        //indexer'ı durduran kod
+        //The code that stops Indexer
         public void stop(){
             IndexerMotor.stopMotor();
         }

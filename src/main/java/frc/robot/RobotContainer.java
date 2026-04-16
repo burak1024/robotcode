@@ -42,7 +42,7 @@ public class RobotContainer {
         
     
     
-    //xbox controller tanımlayan kısım//
+    //The part to identify xbox controller
     private final CommandXboxController joystick = 
     new CommandXboxController(0); 
 
@@ -65,13 +65,13 @@ public class RobotContainer {
         CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
     }
 
-    //tuş ataması
+    //key bindings
     private void configureBindings() {
-        //shooter'ın ateş etmesini sağlayıp uzaklığa göre motor hızını ayarlayan kod(R2)
+        //The code that binds right trigger to starting shooter (starts to shoot)
         joystick.rightTrigger().whileTrue(new autoLockCommand(drivetrain, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_shooterSubsystem.stop()));
-        //taret'i huba döndüren kod aç-kapa halinde (a) 
+        //The code that binds a button to align robot to hub
         joystick.a().onTrue(new autoaimcommand(drivetrain, m_turretSubsystem)).onFalse(new InstantCommand(()->m_turretSubsystem.stop()));        
-        //indexer'ın döndüren kod (b)//
+        //The code that binds b button to start Indexer
         joystick.b().onTrue(new IndexerturnCommand(drivetrain, m_IndexerSubsystem)).onFalse(new InstantCommand(()->m_IndexerSubsystem.stop()));
 
 

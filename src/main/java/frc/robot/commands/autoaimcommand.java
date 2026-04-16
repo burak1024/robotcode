@@ -26,7 +26,7 @@ public class autoaimcommand extends Command {
 
 
 
-  //limelight'tan aldığı veriyle motorun ne tarafa ne kadar dönmesi gerektiğini anlayıp,o kadar döndüren kod
+  //With the code took from limelight,This code turns the turret to the hub 
   @Override
   public void execute(){
       if (LimelightHelpers.getTV("limelight")){
