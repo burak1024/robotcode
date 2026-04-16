@@ -29,27 +29,27 @@ private final VelocityVoltage m_velocityControl = new VelocityVoltage(0);
         //The code that enables the turret to rotate clockwise
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        //boş konfigürasyonu saat yönünde dönsün diye atayan kodlar(ayrıca 16. motorun 15.motorla aynı çalışmasını sağlayan kod)
+        //the code that adds new configurations
         topMotor.getConfigurator().apply(config);
         bottomMotor.getConfigurator().apply(config);
         bottomMotor.setControl(new com.ctre.phoenix6.controls.StrictFollower(topMotor.getDeviceID()));
     }
 
-        //topMotor'un hızıyla alakalı (AI)
+        
         public void setVelocity(double rps){
             topMotor.setControl(m_velocityControl.withVelocity(rps));
     }
 
-        //motoru durduran kod
+        //the code that stops shooter
         public void stop() {
             topMotor.stopMotor();
             bottomMotor.stopMotor();
     }
-        //kerem yazdı neydi unuttum ama shooterın hızıyla alakalı
+        
         public void setTopMotor(ControlRequest val){
             topMotor.setControl(val);
     }
-        //SmartDashboard'da RPS'i(Rotation Per Second) gösteren komut
+        //On the SmartDashboard,this code shows us to RPS(Rotations Per Second)
     @Override 
     public void periodic(){
         SmartDashboard.putNumber("Shooter Gerçek RPS", topMotor.getVelocity().getValueAsDouble());}
