@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
+
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.TurretSubsystem;
@@ -18,10 +20,13 @@ public class autoaimcommand extends Command {
     this.turret=turret;
   }
 
+
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
+
+
+  //limelight'tan aldığı veriyle motorun ne tarafa ne kadar dönmesi gerektiğini anlayıp,o kadar döndüren kod
   @Override
   public void execute(){
       if (LimelightHelpers.getTV("limelight")){
@@ -33,11 +38,11 @@ public class autoaimcommand extends Command {
     
   
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
 
-  // Returns true when the command should end.
+
+
   @Override
   public boolean isFinished() {
     return false;

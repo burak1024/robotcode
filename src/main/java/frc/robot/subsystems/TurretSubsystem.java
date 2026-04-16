@@ -7,19 +7,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class TurretSubsystem extends SubsystemBase{
-public final TalonFX turretMotor =new TalonFX(17);
+    public final TalonFX turretMotor =new TalonFX(17);
+    //Turret'in saat yönünde dönmesini sağlayan kod
+    public TurretSubsystem(){
 
-public TurretSubsystem(){
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; 
+        turretMotor.getConfigurator().apply(config);
+    }
 
-TalonFXConfiguration config = new TalonFXConfiguration();
-config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; 
-turretMotor.getConfigurator().apply(config);
-}
-
-
-
-
-public void stop(){
-    turretMotor.stopMotor();
-}
+    //Taret'i durduran kod
+    public void stop(){
+        turretMotor.stopMotor();
+    }
 }

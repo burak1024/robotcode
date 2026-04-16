@@ -1515,11 +1515,6 @@ public class LimelightHelpers {
         return false;
     }
 
-    /**
-     * Gets the latest JSON results output and returns a LimelightResults object.
-     * @param limelightName Name of the Limelight camera
-     * @return LimelightResults object containing all current target data
-     */
     public static LimelightResults getLatestResults(String limelightName) {
 
         long start = System.nanoTime();

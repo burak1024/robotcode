@@ -15,7 +15,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -35,17 +34,17 @@ import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.004; 
+
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
 
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
     private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
+
     private boolean m_hasAppliedOperatorPerspective = false;
 
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
-
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
-
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
             null,        
@@ -139,9 +138,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     @Override
     public void periodic() {
 
-
+        //blue tarafa göre limelight'ı ayarlayan kod
         var limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
 
+
+        //limelight'ta sinyal yoksa otomatik limelight'ı kapatıp robotun sahada kalmasını engelleyen kod
         if (limelightMeasurement != null && limelightMeasurement.tagCount > 0){
             addVisionMeasurement(
             limelightMeasurement.pose,
@@ -174,7 +175,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
-        m_simNotifier.startPeriodic(kSimLoopPeriod);
+            m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
     @Override

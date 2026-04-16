@@ -26,7 +26,7 @@ public class autoLockCommand extends Command {
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
+  //hub'un koordinatlarıyla robotun koordinatlarını alıp,çıkarıp,pisagorunu alıyo ve motor hızını ona göre ayarlıyor
   @Override
   public void execute() {
     var currentPose= this.drivetrain.getState().Pose;
