@@ -22,11 +22,14 @@ import frc.robot.commands.autoLockCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.commands.autoaimcommand;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     // ShooterSubsystem'i burada oluşturuyoruz
+    private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
 private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();  
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -38,6 +41,7 @@ private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
         
     private final CommandXboxController joystick = 
     new CommandXboxController(0); // USB port 0
+
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -55,7 +59,8 @@ private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
     }
 
     private void configureBindings() {
-        joystick.rightTrigger().whileTrue(new autoLockCommand(drivetrain, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_shooterSubsystem.stop())).whileTrue(drivetrain.aimAtTarget());        
+        joystick.rightTrigger().whileTrue(new autoLockCommand(drivetrain, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_shooterSubsystem.stop()));
+        joystick.a().onTrue(new autoaimcommand(drivetrain, m_turretSubsystem)).onFalse(new InstantCommand(()->m_turretSubsystem.stop()));        
         
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically

@@ -62,23 +62,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
 
-    public Command aimAtTarget(){
-        return run(()->{
-            double rotationSpeed = 0;
-            
-            if (LimelightHelpers.getTV("limelight")){
-            double tx=LimelightHelpers.getTX("limelight");
-            rotationSpeed = tx* 0.05;
-            }
-            
-            
-            this.setControl(new SwerveRequest.FieldCentric().withRotationalRate(rotationSpeed));
-        });}
-
-    
-
-
-    public CommandSwerveDrivetrain(
+     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
