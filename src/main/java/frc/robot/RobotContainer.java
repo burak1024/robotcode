@@ -21,8 +21,9 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.commands.autoaimcommand;
+import frc.robot.commands.feedercommand;
 import frc.robot.commands.IndexerturnCommand;
-
+import frc.robot.subsystems.FeederSubsystem;
 
 
 public class RobotContainer {
@@ -32,7 +33,7 @@ public class RobotContainer {
     private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
     private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();  
     private final IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem();
-    
+    private final FeederSubsystem m_FeederSubsystem = new FeederSubsystem();
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) 
@@ -73,8 +74,8 @@ public class RobotContainer {
         joystick.a().onTrue(new autoaimcommand(drivetrain, m_turretSubsystem)).onFalse(new InstantCommand(()->m_turretSubsystem.stop()));        
         //The code that binds b button to start Indexer
         joystick.b().onTrue(new IndexerturnCommand(drivetrain, m_IndexerSubsystem)).onFalse(new InstantCommand(()->m_IndexerSubsystem.stop()));
-
-
+        //The code that binds b button to start feeder 
+        joystick.b().onTrue(new feedercommand(drivetrain,m_FeederSubsystem)).onFalse(new InstantCommand(()->m_FeederSubsystem.stop()));
 
         drivetrain.setDefaultCommand(
             

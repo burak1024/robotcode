@@ -23,8 +23,8 @@ public class autoLockCommand extends Command {
     this.shooter=shooter;
   }
 
-  @Override
-  public void initialize() {}
+
+  
 
   //this code takes the cooordinates of robot and hub and uses this for adjusting speed of the shooter motor
   @Override
