@@ -4,7 +4,7 @@ import static edu.wpi.first.units.Units.*;
 
 import java.util.Optional;
 import java.util.function.Supplier;
-
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
@@ -18,7 +18,6 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -42,6 +41,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final Rotation2d kRedAlliancePerspectiveRotation = Rotation2d.k180deg;
 
     private boolean m_hasAppliedOperatorPerspective = false;
+
 
     private final SwerveRequest.ApplyRobotSpeeds m_pathApplyRobotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
@@ -83,6 +83,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         configureAutoBuilder();
     }
 
+  public ChassisSpeeds getCurrentChassisSpeeds() {
+    
+    return this.getKinematics().toChassisSpeeds(this.getState().ModuleStates);
+}
     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         double odometryUpdateFrequency,
