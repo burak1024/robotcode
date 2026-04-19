@@ -64,7 +64,7 @@ public class RobotContainer {
 
         configureBindings();
   
-        CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
+        //CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
     }
 
     //key bindings
