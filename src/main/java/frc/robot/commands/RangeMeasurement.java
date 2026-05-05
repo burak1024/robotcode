@@ -8,17 +8,15 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
+import static frc.robot.Constants.*;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ShooterSubsystem;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class autoLockCommand extends Command {
-  /** Creates a new autoLockCommand. */
+public class RangeMeasurement extends Command {
+ 
   CommandSwerveDrivetrain drivetrain;
   ShooterSubsystem shooter;
-  public autoLockCommand(CommandSwerveDrivetrain drivetrain,ShooterSubsystem shooter) {
-    addRequirements(drivetrain);
-    this.drivetrain = drivetrain;
+  public RangeMeasurement(CommandSwerveDrivetrain drivetrain,ShooterSubsystem shooter) {
     addRequirements(shooter);
     this.shooter=shooter;
   }
@@ -32,10 +30,10 @@ public class autoLockCommand extends Command {
     var currentPose= this.drivetrain.getState().Pose;
 
     double rx=currentPose.getX();
-
     double ry=currentPose.getY();
 
-    double hx=4.575;double hy=4;double gx=rx-hx;double gy=ry-hy;
+    double gx=rx-HUB_POSITIONX;
+    double gy=ry-HUB_POSITIONY;
 
     double pisagor=Math.hypot(gx, gy);
 
@@ -53,4 +51,12 @@ public class autoLockCommand extends Command {
   public boolean isFinished() {
     return false;
   }
+
+
+
+
+
+
+
+
 }

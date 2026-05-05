@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.BOTTOM_MOTOR_ID;
+import static frc.robot.Constants.TOP_MOTOR_ID;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -11,8 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShooterSubsystem extends SubsystemBase{
 
-private final TalonFX topMotor = new TalonFX(15);
-private final TalonFX bottomMotor= new TalonFX(16);   
+public final TalonFX topMotor = new TalonFX(TOP_MOTOR_ID);
+private final TalonFX bottomMotor= new TalonFX(BOTTOM_MOTOR_ID);   
 private final VelocityVoltage m_velocityControl = new VelocityVoltage(0);
 
 

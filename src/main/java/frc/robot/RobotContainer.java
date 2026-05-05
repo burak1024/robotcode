@@ -13,27 +13,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-import frc.robot.commands.autoLockCommand;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.commands.feedercommand;
-import frc.robot.commands.IndexerturnCommand;
-import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.commands.ShootOnMove;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); 
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); 
     
-    private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+
+    
     private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();  
     private final IndexerSubsystem m_IndexerSubsystem = new IndexerSubsystem();
     private final FeederSubsystem m_FeederSubsystem = new FeederSubsystem();
+    private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+    private final TurretSubsystem m_TurretSubsystem=new TurretSubsystem();
+
+
 
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) 
@@ -42,18 +43,13 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
         
    
-
+    private final CommandPS4Controller dualshock=
+    new CommandPS4Controller(0);
     
     //The part to identify xbox controller
     private final CommandXboxController joystick = 
     new CommandXboxController(0); 
-    private final CommandXboxController m_keyboard=new CommandXboxController(1);
-
-
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
-
-  
+    
     private final SendableChooser<Command> autoChooser;
 
 
@@ -70,22 +66,22 @@ public class RobotContainer {
     //key bindings
     private void configureBindings() {
         
-        m_keyboard.button(1).onTrue(new ShootOnMove(m_turretSubsystem,drivetrain)).onFalse(new InstantCommand(()->m_turretSubsystem.stop()));
-        m_keyboard.button(2).onTrue(new autoLockCommand(drivetrain, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_shooterSubsystem.stop()));
-        m_keyboard.button(3).onTrue(new IndexerturnCommand(drivetrain, m_IndexerSubsystem)).onFalse(new InstantCommand(()->m_IndexerSubsystem.stop()));   
-        m_keyboard.button(3).onTrue(new feedercommand(drivetrain,m_FeederSubsystem)).onFalse(new InstantCommand(()->m_FeederSubsystem.stop()));
         
         
+        dualshock.R1().whileTrue(new IntakeCommand(m_IntakeSubsystem)).onFalse(new InstantCommand(()->m_IntakeSubsystem.stop()));
+        dualshock.L1().whileTrue(new OuttakeCommand(m_IntakeSubsystem)).onFalse(new InstantCommand(()->m_IntakeSubsystem.stop()));
+        dualshock.circle().onTrue(new StartCommand(m_FeederSubsystem, m_IndexerSubsystem, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_FeederSubsystem.stop())).onFalse(new InstantCommand(()->m_IndexerSubsystem.stop())).onFalse(new InstantCommand(()->m_shooterSubsystem.stop()));
+        dualshock.L3().onTrue(new RangeMeasurement(drivetrain, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_shooterSubsystem.stop()));
+        dualshock.circle().onTrue(new ShootOnMove(m_TurretSubsystem, drivetrain)).onFalse(new InstantCommand(()->m_TurretSubsystem.stop()));
         
         //The code that binds right trigger to starting shooter (starts to shoot)
-        joystick.rightTrigger().whileTrue(new autoLockCommand(drivetrain, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_shooterSubsystem.stop()));
-
-        //The code that binds a button to align robot to hub
-        joystick.a().onTrue(new ShootOnMove(m_turretSubsystem,drivetrain)).onFalse(new InstantCommand(()->m_turretSubsystem.stop()));        
-        //The code that binds b button to start Indexer
-        joystick.b().onTrue(new IndexerturnCommand(drivetrain, m_IndexerSubsystem)).onFalse(new InstantCommand(()->m_IndexerSubsystem.stop()));
-        //The code that binds b button to start feeder 
-        joystick.b().onTrue(new feedercommand(drivetrain,m_FeederSubsystem)).onFalse(new InstantCommand(()->m_FeederSubsystem.stop()));
+        joystick.rightTrigger().whileTrue(new RangeMeasurement(drivetrain, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_shooterSubsystem.stop()));
+        //The code that binds right bumper to open Intake
+        joystick.rightBumper().whileTrue(new IntakeCommand(m_IntakeSubsystem)).onFalse(new InstantCommand(()->m_IntakeSubsystem.stop()));
+        //the code that binds left bumper outtake
+        joystick.leftBumper().whileTrue(new OuttakeCommand(m_IntakeSubsystem)).onFalse(new InstantCommand(()->m_IntakeSubsystem.stop()));      
+        
+        joystick.a().whileTrue(new StartCommand( m_FeederSubsystem, m_IndexerSubsystem, m_shooterSubsystem)).onFalse(new InstantCommand(()->m_FeederSubsystem.stop())).onFalse(new InstantCommand(()->m_IndexerSubsystem.stop())).onFalse(new InstantCommand(()->m_shooterSubsystem.stop()));
 
         drivetrain.setDefaultCommand(
             
@@ -93,18 +89,17 @@ public class RobotContainer {
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) 
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) 
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) 
-            )
+                    .withVelocityX(-dualshock.getLeftY()*MaxSpeed)
+                    .withVelocityY(-dualshock.getLeftX()*MaxSpeed)
+                    .withRotationalRate(-dualshock.getRightX()*MaxAngularRate)
+            
+            
+                    )
         );
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    
-    
-    
-    
-    
-    
     public Command getAutonomousCommand() {
         
         return autoChooser.getSelected();

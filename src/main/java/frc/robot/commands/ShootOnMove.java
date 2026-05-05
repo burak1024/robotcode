@@ -2,50 +2,50 @@ package frc.robot.commands;
 
 
 
-import com.ctre.phoenix6.controls.DutyCycleOut;
-
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.TurretSubsystem;
-import frc.robot.LimelightHelpers;
 
 
-public class ShootOnMove extends Command {
+public class ShootOnMove extends Command{
+    private final TurretSubsystem turret;
+    private final CommandSwerveDrivetrain drivetrain;
     
-    private final TurretSubsystem m_turret;
-    private final CommandSwerveDrivetrain m_drive;
+    public ShootOnMove(TurretSubsystem turret,CommandSwerveDrivetrain drivetrain){
+    this.turret=turret;
+    this.drivetrain=drivetrain;
+    addRequirements(turret);
+}
 
 
-    private final double kP_Translation = 0.02;
-    private final double kP_Rotation = 0.01;
-    public ShootOnMove(TurretSubsystem turret,CommandSwerveDrivetrain drive){
-        m_turret = turret;
-        m_drive=drive;
-        addRequirements(m_turret);
-    }
 @Override
 public void execute(){
- if (LimelightHelpers.getTV("limelight")){
-    double tx = LimelightHelpers.getTX("limelight");
 
-    ChassisSpeeds speeds =m_drive.getCurrentChassisSpeeds();
+double tx=LimelightHelpers.getTX("limelight");
+boolean hastarget =LimelightHelpers.getTV("limelight");
 
-    double translationOffSet = speeds.vyMetersPerSecond *kP_Translation;
-    double rotationOffset = speeds.omegaRadiansPerSecond *kP_Rotation;
+if (hastarget){
+
+ double currentAngle=turret.getTurretRotation();
 
 
-    double adjustedTX =tx- translationOffSet - rotationOffset;
+var ChassisSpeeds=drivetrain.getState().Speeds;
+double robotVy=ChassisSpeeds.vyMetersPerSecond;
 
-    double output =adjustedTX*0.05;
 
-    m_turret.turretMotor.setControl(new DutyCycleOut(output));
 
- }
+double target=currentAngle+(tx/360.0)-(robotVy*0.05);
+turret.setTurretAngle(target);
+
+
+SmartDashboard.putNumber("Turret/MeasuredAngle", currentAngle * 360);
 }
-@Override
-public void end(boolean interrupted){
 
-    m_turret.turretMotor.setControl(new DutyCycleOut(0));
 }
+
+
+
 }
+    
